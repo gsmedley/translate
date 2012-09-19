@@ -26,6 +26,15 @@ class Translate::Keys
     Translate::Keys.to_shallow_hash(I18n.backend.send(:translations)[locale.to_sym]).keys.sort
   end
 
+  def duplicate_keys
+    Translate::Keys.translated_locales.inject({}) do |missing, locale|
+      missing[locale] = i18n_keys(I18n.default_locale).map do |key|
+        I18n.backend.send(:lookup, locale, key) == I18n.backend.send(:lookup, I18n.default_locale, key) ? key : nil
+      end.compact
+      missing
+    end
+  end
+
   def untranslated_keys
     Translate::Keys.translated_locales.inject({}) do |missing, locale|
       missing[locale] = i18n_keys(I18n.default_locale).map do |key|

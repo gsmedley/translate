@@ -33,6 +33,27 @@ class Hash
 end
 
 namespace :translate do
+  desc "Show duplicate keys for locale LOCALE"
+  task :duplicates => :environment do
+    from_locale = I18n.default_locale
+    duplicates = Translate::Keys.new.duplicate_keys
+
+    messages = []
+    duplicates.each do |locale, keys|
+      keys.each do |key|
+        from_text = I18n.backend.send(:lookup, from_locale, key)
+        next if from_text.blank?
+        messages << "#{locale}.#{key} (#{from_locale}.#{key}='#{from_text}')"
+      end
+    end
+      
+    if messages.present?
+      messages.each { |m| puts m }
+    else
+      puts "No duplicate keys"
+    end
+  end
+
   desc "Show untranslated keys for locale LOCALE"
   task :untranslated => :environment do
     from_locale = I18n.default_locale
@@ -42,6 +63,7 @@ namespace :translate do
     untranslated.each do |locale, keys|
       keys.each do |key|
         from_text = I18n.backend.send(:lookup, from_locale, key)
+        next if from_text.blank?
         messages << "#{locale}.#{key} (#{from_locale}.#{key}='#{from_text}')"
       end
     end

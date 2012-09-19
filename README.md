@@ -21,12 +21,13 @@ Rake Tasks
 
 In addition to the web UI this plugin adds the following rake tasks:
 
-translate:untranslated
-translate:missing
-translate:remove_obsolete_keys
-translate:merge_keys
-translate:google
-translate:changed
+    translate:untranslated
+    translate:missing
+    translate:remove_obsolete_keys
+    translate:merge_keys
+    translate:google
+    translate:changed
+    translate:duplicates
 
 The missing task shows you any I18n keys in your code that do not have translations in the YAML file for your default locale, i.e. config/locales/sv.yml.
 
@@ -36,6 +37,8 @@ The google task is used for auto translating from one locale to another using Go
 * Note: this task is currently broken, as Google is now charging for the Google Translate service.
 
 The changed rake task can show you between one YAML file to another which keys have had their texts changed.
+
+The duplicates task can show you strings that are the same in both locales.
 
 Installation
 ------------

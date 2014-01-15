@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "translate-rails3-plus"
-  s.version = "0.0.7"
+  s.version = "0.0.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Peter Marklund", "Milan Novota", "Roman Shterenzon", "Garth Smedley"]
-  s.date = "2012-07-09"
+  s.date = "2014-01-15"
   s.description = "This plugin provides a web interface for translating Rails I18n texts\n(requires Rails 3.0 or higher) from one locale to another.\nThe plugin has been tested only with the simple I18n backend that ships\nwith Rails.\nI18n texts are read from and written to YAML files under config/locales.\n\nThis gem is a fork of https://github.com/romanbsd/translate.\nFrom the original https://github.com/mynewsdesk/translate\nwhich also includes work from this fork: https://github.com/milann/translate\n"
   s.email = "gsmedley@kanayo.com"
   s.extra_rdoc_files = [
@@ -52,7 +52,7 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/gsmedley/translate"
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.16"
-  s.summary = "Newsdesk translate plugin for Rails 3"
+  s.summary = "Newsdesk translate plugin for Rails 3 and above"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3

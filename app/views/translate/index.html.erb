@@ -72,7 +72,7 @@ show_filters << "changed" if @from_locale != @to_locale
     <div class="translations">
       <h2>Translations from <span class='big-locale'><%= @from_locale %></span> to <span class='big-locale'><%= @to_locale %></span></h2>
       <p class="translate">
-        <%= button_to_function 'Save Translations', 'testAndSave()' %>
+        <input onclick="testAndSave();" type="button" value="Save Translations">
       </p>
       <% @paginated_keys.each do |key| %>
         <%= 
@@ -85,7 +85,7 @@ show_filters << "changed" if @from_locale != @to_locale
       %>
       <% end %>
       <p class="translate">
-        <%= button_to_function 'Save Translations', 'testAndSave()' %>
+        <input onclick="testAndSave();" type="button" value="Save Translations">
       </p>
     </div>
   <% end %>

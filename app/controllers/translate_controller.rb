@@ -28,7 +28,8 @@ class TranslateController < ActionController::Base
     Translate::Log.new(@from_locale, @to_locale, params[:key].keys).write_to_file
     force_init_translations # Force reload from YAML file
     flash[:notice] = "Translations stored"
-    redirect_to params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern, :translated_text_type, :translated_text_pattern).merge({:action => :index})
+    old_params = params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern, :translated_text_type, :translated_text_pattern)
+    redirect_to( {:action => :index}.merge(old_params) )
   end
 
   # GET /translate/reload

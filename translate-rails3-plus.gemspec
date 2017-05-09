@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Peter Marklund", "Milan Novota", "Roman Shterenzon", "Garth Smedley"]
-  s.date = "2014-01-15"
+  s.date = "2017-05-09"
   s.description = "This plugin provides a web interface for translating Rails I18n texts\n(requires Rails 3.0 or higher) from one locale to another.\nThe plugin has been tested only with the simple I18n backend that ships\nwith Rails.\nI18n texts are read from and written to YAML files under config/locales.\n\nThis gem is a fork of https://github.com/romanbsd/translate.\nFrom the original https://github.com/mynewsdesk/translate\nwhich also includes work from this fork: https://github.com/milann/translate\n"
   s.email = "gsmedley@kanayo.com"
   s.extra_rdoc_files = [

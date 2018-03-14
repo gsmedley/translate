@@ -112,7 +112,7 @@ Array.prototype.unique =
             {
               var patt1=/%\{[^\{\}]*\}/g;
               var val_subs = val.match(patt1)
-              var key = item.select('.translation-text')[0].innerHTML 
+              var key = item.select('.translation-text').map( elem => elem.innerHTML ).join("")
                 var key_subs = key.match(patt1)
               if( val_subs == null ){ val_subs = [] }
               if( key_subs == null ){ key_subs = [] }

@@ -9,6 +9,7 @@ class TranslateController < ActionController::Base
 
   # GET /translate
   def index
+    params.permit!
     initialize_keys
     filter_by_key_pattern
     filter_by_text_pattern
@@ -22,6 +23,7 @@ class TranslateController < ActionController::Base
 
   # POST /translate
   def translate
+    params.permit!
     processed_parameters = process_array_parameters(params[:key])
     I18n.backend.store_translations(@to_locale, Translate::Keys.to_deep_hash(processed_parameters))
     Translate::Storage.new(@to_locale).write_to_file
@@ -34,6 +36,7 @@ class TranslateController < ActionController::Base
 
   # GET /translate/reload
   def reload
+    params.permit!
     Translate::Keys.files = nil
     redirect_to :action => 'index'
   end

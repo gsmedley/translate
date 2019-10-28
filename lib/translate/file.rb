@@ -9,8 +9,9 @@ class Translate::File
   
   def write(keys)
     FileUtils.mkdir_p File.dirname(path)
-    File.open(path, "w") do |file|
-      file.puts keys_to_yaml(Translate::File.deep_stringify_keys(keys))
+    yml_keys = keys_to_yaml( Translate::File.deep_stringify_keys(keys) )
+    File.open(path, "w") do |file| 
+      file.write yml_keys
     end    
   end
   
@@ -28,8 +29,41 @@ class Translate::File
   end
   
   private
+
   def keys_to_yaml(keys)
-    # Using ya2yaml, if available, for UTF8 support
-    keys.respond_to?(:ya2yaml) ? keys.ya2yaml(:escape_as_utf8 => true) : keys.to_yaml
-  end    
+
+    yaml = YAML.dump(keys)
+    
+    ast = Psych.parse_stream yaml
+    
+    # First pass, quote everything
+    ast.grep(Psych::Nodes::Scalar).each do |node|
+      node.plain  = false
+      node.quoted = true
+      node.style  = Psych::Nodes::Scalar::DOUBLE_QUOTED
+    end
+    
+    # Second pass, unquote keys, bools and ints
+    ast.grep(Psych::Nodes::Mapping).each do |node|
+      node.children.each_slice(2) do |k, v|
+        k.plain  = true
+        k.quoted = false
+        k.style  = Psych::Nodes::Scalar::ANY
+        
+        if v.to_ruby.to_s == v.to_ruby.to_s.to_i.to_s
+          v.plain  = true
+          v.quoted = false
+          v.style  = Psych::Nodes::Scalar::ANY
+        end
+        
+        if v.to_ruby.to_s == "true" || v.to_ruby.to_s == "false"
+          v.plain  = true
+          v.quoted = false
+          v.style  = Psych::Nodes::Scalar::ANY
+        end
+      end
+    end
+
+    ast.yaml( nil, line_width: -1 )
+  end
 end

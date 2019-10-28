@@ -29,7 +29,7 @@ class TranslateController < ActionController::Base
     Translate::Storage.new(@to_locale).write_to_file
     Translate::Log.new(@from_locale, @to_locale, params[:key].keys).write_to_file
     force_init_translations # Force reload from YAML file
-    flash[:notice] = "Translations stored"
+    flash[:notice] = "Translations saved"
     old_params = params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern, :translated_text_type, :translated_text_pattern)
     redirect_to( {:action => :index}.merge(old_params) )
   end
@@ -39,6 +39,14 @@ class TranslateController < ActionController::Base
     params.permit!
     Translate::Keys.files = nil
     redirect_to :action => 'index'
+  end
+
+  def download
+    params.permit!
+    initialize_keys
+    text = Translate::Storage.new(@to_locale).read_from_file
+    send_data text, :filename => @to_locale.to_s + ".yml"
+  
   end
 
   private

@@ -8,6 +8,10 @@ class Translate::Storage
   def write_to_file
     Translate::File.new(file_path).write(keys)
   end
+
+  def read_from_file
+    Translate::File.new(file_path).read_raw()
+  end
   
   def self.file_paths(locale)
     Dir.glob(File.join(root_dir, "config", "locales", "**","#{locale}.yml"))

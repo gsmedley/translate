@@ -19,11 +19,16 @@ class Translate::File
     File.exists?(path) ? YAML::load(IO.read(path)) : {}
   end
 
+  def read_raw
+    File.exists?(path) ? File.read(path) : ""
+  end
+
   # Stringifying keys for prettier YAML
   def self.deep_stringify_keys(hash)
     hash.inject({}) { |result, (key, value)|
       value = deep_stringify_keys(value) if value.is_a? Hash
-      result[(key.to_s rescue key) || key] = value
+      
+      result[(key.to_s rescue key).present? ?  key.to_s : key] = value
       result
     }
   end
@@ -49,18 +54,20 @@ class Translate::File
         k.plain  = true
         k.quoted = false
         k.style  = Psych::Nodes::Scalar::ANY
-        
-        if v.to_ruby.to_s == v.to_ruby.to_s.to_i.to_s
+
+
+        if k.to_ruby.to_s == "false" || k.to_ruby.to_s == "true"
+          k.plain  = false
+          k.quoted = true
+          k.style  = Psych::Nodes::Scalar::DOUBLE_QUOTED
+        end
+       
+        if v.to_ruby.to_s == v.to_ruby.to_s.to_i.to_s || v.to_ruby.to_s == "true" || v.to_ruby.to_s == "false"
           v.plain  = true
           v.quoted = false
           v.style  = Psych::Nodes::Scalar::ANY
         end
         
-        if v.to_ruby.to_s == "true" || v.to_ruby.to_s == "false"
-          v.plain  = true
-          v.quoted = false
-          v.style  = Psych::Nodes::Scalar::ANY
-        end
       end
     end
 
